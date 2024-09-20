@@ -1,50 +1,77 @@
-import { useState } from "react"
+import { useState } from "react";
 
 const containerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px'
-}
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
+};
 
 const starsContainerStyle = {
-    display: 'flex',
-    gap: '4px'
-}
+    display: "flex",
+    gap: "4px",
+};
 
-const lineStyle = {
-    lineHeight: '1',
-    margin: '0'
-}
-
-const starStyle = {
-    width: "48px",
-    height: "48px",
-    display: "block",
-    cursor: "pointer"
-}
-
-export default function StarRating({ maxRating = 5 }) {
-    const [rating, setRating] = useState(0)
+export default function StarRating({
+    maxRating = 5,
+    color = "#fcc419",
+    size = 48,
+}) {
+    const [rating, setRating] = useState(0);
+    const [tempRating, setTempRating] = useState(0);
     function handleRating(rating) {
         setRating(rating);
     }
 
-    return <div style={containerStyle}>
-        <div style={starsContainerStyle}>
-            {Array.from({ length: maxRating }, (_, i) => (<Star key={i} full={i + 1 <= rating} onClick={() => handleRating(i + 1)} />))}
+    const textStyle = {
+        lineHeight: "1",
+        margin: "0",
+        color: color,
+        fontSize: `${size / 1.5}px`,
+    };
+    return (
+        <div style={containerStyle}>
+            <div style={starsContainerStyle}>
+                {Array.from({ length: maxRating }, (_, i) => (
+                    <Star
+                        key={i}
+                        full={tempRating ? i + 1 <= tempRating : i + 1 <= rating}
+                        onClick={() => handleRating(i + 1)}
+                        onHoverIn={() => setTempRating(i + 1)}
+                        onHoverOut={() => setTempRating(0)}
+                        color={color}
+                        size={size}
+                    />
+                ))}
+            </div>
+            <p style={textStyle}>{tempRating || rating || ""}</p>
         </div>
-        <p style={lineStyle}>{rating || ""}</p>
-    </div>
+    );
 }
 
-function Star({ onClick, full }) {
+function Star({ onClick, full, onHoverIn, onHoverOut, color, size }) {
+    const starStyle = {
+        width: "48px",
+        height: "48px",
+        display: "block",
+        cursor: "pointer",
+        color: color,
+        size: size,
+    };
+
     return (
-        <span span role="button" onClick={onClick} style={starStyle} >
+        <span
+            span
+            role="button"
+            onClick={onClick}
+            style={starStyle}
+            onMouseEnter={onHoverIn}
+            onMouseLeave={onHoverOut}
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill={full ? "#000" : "none"}
+                fill={full ? { color } : "none"}
                 viewBox="0 0 24 24"
-                stroke="#000"
+                stroke={color}
             >
                 <path
                     strokeLinecap="round"
@@ -54,5 +81,5 @@ function Star({ onClick, full }) {
                 />
             </svg>
         </span>
-    )
+    );
 }
