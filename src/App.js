@@ -48,16 +48,44 @@ const tempWatchedData = [
 ];
 
 export default function App() {
+  const [movies, setMovies] = useState(tempMovieData)
+  const [watched, setWatched] = useState(tempWatchedData);
+
   return (
     <>
-      <Navbar />
-      <Main />
+      <Navbar>
+        <Logo />
+        <Search />
+        <NumResults movies={movies} />
+      </Navbar>
+      <Main>
+        {/* <Box element={<MovieList movies={movies} />} />
+        <Box element={
+          <>
+            <WatchedSummary watched={watched} />
+            <WatchedMovies watched={watched} />
+          </>
+        } /> */}
+        <Box >
+          <MovieList />
+        </Box>
+        <Box movies={movies} >
+          <WatchedSummary watched={watched} />
+          <WatchedMovies watched={watched} />
+        </Box>
+      </Main>
     </>
   );
 }
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+
+function Navbar({ children }) {
+  return <nav className="nav-bar">
+    {children}
+  </nav>
+}
 
 function Logo() {
   return <div className="logo">
@@ -77,21 +105,19 @@ function Search() {
   />
 }
 
-function NumResults() {
+function NumResults({ movies }) {
   return <p className="num-results">
-    Found <strong>X</strong> results
+    Found <strong>{movies.length}</strong> results
   </p>
 }
 
-function Navbar() {
-  return <nav className="nav-bar">
-    <Logo />
-    <Search />
-    <NumResults />
-  </nav>
+function Main({ children }) {
+  return <main className="main">
+    {children}
+  </main>
 }
 
-function ListBox() {
+function Box({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return <div className="box">
@@ -101,9 +127,7 @@ function ListBox() {
     >
       {isOpen1 ? "–" : "+"}
     </button>
-    {isOpen1 && (
-      <MovieList />
-    )}
+    {isOpen1 && children}
   </div>
 }
 
@@ -127,27 +151,6 @@ function Movie({ movie }) {
       </p>
     </div>
   </li>
-}
-
-function WatchedBox() {
-  const [watched, setWatched] = useState(tempWatchedData);
-  const [isOpen2, setIsOpen2] = useState(true);
-
-  return <div className="box">
-    <button
-      className="btn-toggle"
-      onClick={() => setIsOpen2((open) => !open)}
-    >
-      {isOpen2 ? "–" : "+"}
-    </button>
-    {isOpen2 && (
-      <>
-        <WatchedSummary watched={watched} />
-        <WatchedMovies watched={watched} />
-
-      </>
-    )}
-  </div>
 }
 
 function WatchedSummary({ watched }) {
@@ -206,12 +209,5 @@ function WatchedMovie({ movie }) {
       </p>
     </div>
   </li>
-}
-
-function Main() {
-  return <main className="main">
-    <ListBox />
-    <WatchedBox />
-  </main>
 }
 
