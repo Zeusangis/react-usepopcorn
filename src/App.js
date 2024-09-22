@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -48,11 +48,15 @@ const tempWatchedData = [
 ];
 const KEY = "3f6c6dd9";
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
-  fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=interstellar`)
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=interstellar`)
+      .then((res) => res.json())
+      .then((data) => setMovies(data.Search));
+  }, []);
+
   return (
     <>
       <Navbar>
@@ -61,15 +65,8 @@ export default function App() {
         <NumResults movies={movies} />
       </Navbar>
       <Main>
-        {/* <Box element={<MovieList movies={movies} />} />
-        <Box element={
-          <>
-            <WatchedSummary watched={watched} />
-            <WatchedMovies watched={watched} />
-          </>
-        } /> */}
         <Box>
-          <MovieList />
+          <MovieList movies={movies} />
         </Box>
         <Box movies={movies}>
           <WatchedSummary watched={watched} />
@@ -137,8 +134,7 @@ function Box({ children }) {
   );
 }
 
-function MovieList() {
-  const [movies, setMovies] = useState(tempMovieData);
+function MovieList({ movies }) {
   return (
     <ul className="list">
       {movies?.map((movie) => (
