@@ -27,7 +27,10 @@ export default function App() {
   }
 
   function handleAddWatched({ movie }) {
-    setWatched(movie);
+    console.log(movie);
+    setWatched((watched) => [...watched, movie]);
+    console.log(watched);
+    setSelectedId(null);
   }
 
   useEffect(() => {

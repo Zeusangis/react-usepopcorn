@@ -20,14 +20,16 @@ export function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
   } = movie;
 
   function handleAdd() {
+    console.log("Handleadd");
     const newWatchedMovie = {
       imdbID: selectedId,
       title,
       year,
       poster,
       imdbRating: Number(imdbRating),
-      runtime: runtime.split(" ").at(0),
+      runtime: Number(runtime.split(" ").at(0)),
     };
+    console.log(newWatchedMovie);
     onAddWatched(newWatchedMovie);
   }
   useEffect(() => {
