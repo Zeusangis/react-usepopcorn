@@ -1,6 +1,6 @@
 const average = (arr) => {
   if (arr.length === 0) return 0; // Return 0 if the array is empty
-  return arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
+  return (arr.reduce((acc, cur) => acc + cur, 0) / arr.length).toFixed(2);
 };
 
 export function WatchedSummary({ watched }) {

@@ -39,7 +39,6 @@ export function MovieDetails({
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
     };
-    console.log(newWatchedMovie);
     onAddWatched(newWatchedMovie);
   }
   useEffect(() => {
