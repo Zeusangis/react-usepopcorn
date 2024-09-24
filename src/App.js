@@ -26,10 +26,8 @@ export default function App() {
     setSelectedId(null);
   }
 
-  function handleAddWatched({ movie }) {
-    console.log(movie);
+  function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
-    console.log(watched);
     setSelectedId(null);
   }
 
@@ -83,6 +81,7 @@ export default function App() {
           {selectedId ? (
             <MovieDetails
               selectedId={selectedId}
+              watched={watched}
               onAddWatched={handleAddWatched}
               onCloseMovie={handleCloseMovie}
             />
