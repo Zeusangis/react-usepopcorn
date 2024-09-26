@@ -41,6 +41,18 @@ export function MovieDetails({
     };
     onAddWatched(newWatchedMovie);
   }
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    });
+    return function () {
+      document.removeEventListener("keydown");
+    };
+  }, [onCloseMovie]);
+
   useEffect(() => {
     async function getMovieDetails() {
       try {
