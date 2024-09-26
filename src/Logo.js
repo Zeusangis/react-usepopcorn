@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export function Logo() {
   return (
     <div className="logo">
@@ -7,6 +9,21 @@ export function Logo() {
   );
 }
 export function Search({ query, setQuery }) {
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+    function callback(e) {
+      if (document.activeElement === inputEl.current) {
+        return;
+      }
+      if (e.code === "Enter") {
+        setQuery("");
+        inputEl.current.focus();
+      }
+    }
+    document.addEventListener("keydown", callback);
+  }, [setQuery]);
+
   return (
     <input
       className="search"
@@ -14,6 +31,7 @@ export function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
