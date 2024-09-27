@@ -9,12 +9,14 @@ import { MovieDetails } from "./MovieDetails";
 import { WatchedSummary } from "./WatchedSummary";
 import { WatchedMovies } from "./WatchedMovies";
 import { useMovies } from "./hooks/useMovies";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 export default function App() {
-  const [watched, setWatched] = useState([]);
+  // const [watched, setWatched] = useState([]);
   const [query, setQuery] = useState("interstellar");
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
+  const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie({ imdbID }) {
     setSelectedId((selectedId) => (imdbID === selectedId ? null : imdbID));
