@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useKey } from "./hooks/useKey";
 
 export function Logo() {
   return (
@@ -11,18 +12,25 @@ export function Logo() {
 export function Search({ query, setQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(() => {
-    function callback(e) {
-      if (document.activeElement === inputEl.current) {
-        return;
-      }
-      if (e.code === "Enter") {
-        setQuery("");
-        inputEl.current.focus();
-      }
+  useKey("Enter", () => {
+    if (document.activeElement === inputEl.current) {
+      return;
     }
-    document.addEventListener("keydown", callback);
-  }, [setQuery]);
+    inputEl.current.focus();
+    setQuery("");
+  });
+  // useEffect(() => {
+  //   function callback(e) {
+  //     if (e.code === "Enter") {
+  //       if (document.activeElement === inputEl.current) {
+  //         return;
+  //       }
+  //       setQuery("");
+  //       inputEl.current.focus();
+  //     }
+  //   }
+  //   document.addEventListener("keydown", callback);
+  // }, [setQuery]);
 
   return (
     <input

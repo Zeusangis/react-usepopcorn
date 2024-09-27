@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Loader } from "./Loader";
 import StarRating from "./starRating";
+import { useKey } from "./hooks/useKey";
 
 export function MovieDetails({
   selectedId,
@@ -43,17 +44,7 @@ export function MovieDetails({
     onAddWatched(newWatchedMovie);
   }
 
-  useEffect(() => {
-    function handleEscape(e) {
-      if (e.code === "Escape") {
-        onCloseMovie();
-      }
-    }
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [onCloseMovie]);
+  useKey("Escape", onCloseMovie);
 
   useEffect(() => {
     async function getMovieDetails() {
